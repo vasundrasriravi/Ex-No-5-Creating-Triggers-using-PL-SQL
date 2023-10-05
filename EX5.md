@@ -14,61 +14,54 @@ To create a Trigger using PL/SQL.
 8. Display the employee table, salary_log table.
 
 ### Program:
-```
-CREATE TABLE employe(
-  empid NUMBER,
-  empname VARCHAR2(10),
-  dept VARCHAR2(10),
-  salary NUMBER
-);
-
-CREATE TABLE salary_log (
-  log_id NUMBER GENERATED ALWAYS AS IDENTITY,
-  empid NUMBER,
-  empname VARCHAR2(10),
-  old_salary NUMBER,
-  new_salary NUMBER,
-  update_date DATE
-);
--- Insert the values in the employee table
-insert into employe values(1,'Kar','IT',1000000);
-insert into employe values(2,'Boha','SALES',500000)
-```
 ### Create employee table
-![employee](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/2a29b107-21e0-4fd1-91f3-65c1639cc265)
+```
+SQL> create table EmployeeNew(Empno NUMBER,Empname VARCHAR2(10),Dept VARCHAR2(10),Desig VARCHAR2(20),Salary NUMBER);
+```
+![sql1](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/d6766990-bc44-461e-9138-aa975dc265f4)
 
 ### Create salary_log table
-![salary](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/871a83fa-367e-483f-a227-2df91b774bf0)
+```
+SQL> create table Sal_Wages(Empno NUMBER,Empname VARCHAR2(10),Old_Salary NUMBER,New_Salary NUMBER,Updated_on DATE);
+```
+![sql2](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/7f62c736-d82b-4cf9-a754-b7781a590b8d)
+
+### inserting data into the employed table:
+```
+SQL> insert into EmployeeNew values(101,'vasundra','AI-DS','Senior Architect',500000);
+SQL> insert into EmployeeNew values(102,'deepii','cyber','System engineer',400000);
+SQL> insert into EmployeeNew values(103,'Abinaya','CSE','Software Tester',230000);
+SQL> insert into EmployeeNew values(104,'surya','AIML','Developer',270000);
+SQL> insert into EmployeeNew values(105,'Diana','IT','Analysist',600000);
+```
+![sql3](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/40c5b8db-c416-490a-8ffb-ca59436ba9f7)
+![sql3 1](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/cb701c95-25b9-4bbd-8fc2-0a36f343f9ec)
+
+### update the salary of an employed:
+```
+SQL> update EmployeeNew SET Salary=100000 where Empno=103;
+```
+![sql4](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/aec603e6-31cf-4645-b3a9-21a92cb7ff84)
 
 ### PLSQL Trigger code
 ```
--- Create the trigger
-CREATE OR REPLACE TRIGGER log_sal_update
-BEFORE UPDATE ON employe
-FOR EACH ROW
-BEGIN
-  IF :OLD.salary != :NEW.salary THEN
-    INSERT INTO sal_log (empid, empname, old_salary, new_salary, update_date)
-    VALUES (:OLD.empid, :OLD.empname, :OLD.salary, :NEW.salary, SYSDATE);
-  END IF;
-END;
-/
--- Insert the values in the employee table
-insert into employe values(1,'Kar','IT',1000000);
-insert into employe values(2,'Boha','SALES',500000);
-
--- Update the salary of an employee
-UPDATE employe
-SET salary = 60000
-WHERE empid = 1;
--- Display the employee table
-SELECT * FROM employe;
-
--- Display the salary_log table
-SELECT * FROM sal_log;
+SQL> CREATE OR REPLACE TRIGGER Salary_Update
+  2  BEFORE UPDATE ON EmployeeNew
+  3  FOR EACH ROW
+  4  BEGIN
+  5  IF :OLD.Salary != :NEW.Salary THEN
+  6  INSERT INTO Sal_Wages (Empno, Empname, Old_Salary, New_Salary, Updated_on)
+  7  VALUES (:OLD.Empno, :OLD.Empname, :OLD.Salary, :NEW.Salary, SYSDATE);
+  8  END IF;
+  9  END;
+ 10  /
 ```
+![sql5](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/34a3e61d-4acd-4f35-bdb9-40d2eda0e039)
+
 ### Output:
-![log](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/908c6ddc-0e11-4fd0-b7df-5c42702a97e2)
+![sql6](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/e76125b8-84ad-4639-81f3-ee7ba8cd89d7)
+
+![sql7](https://github.com/vasundrasriravi/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119393983/f38a1ffe-9a2c-47ca-aa08-915a0b5c2de4)
 
 ### Result:
 Thus the program for creating triggers has been implemented successfully.
